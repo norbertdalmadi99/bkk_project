@@ -4,7 +4,7 @@ A production-style data ingestion pipeline that collects realtime public transpo
 
 ---
 
-## 🧱 Architecture
+## 🧱 System Architecture
 
 BKK API → Python ingestion → GCP Compute Engine (cron jobs) → Cloud SQL PostgreSQL
 
@@ -14,6 +14,11 @@ Key components:
 - Static GTFS refresh (daily)
 - GitHub auto-deployment via git auto pull
 - Lock-safe cron execution
+
+![Architecture](docs/architecture.png)
+
+## 🗄 Database ER Diagram
+![ER Diagram](docs/data_model.png)
 
 ---
 

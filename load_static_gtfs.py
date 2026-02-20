@@ -4,15 +4,17 @@ import psycopg
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-DB = "postgresql://postgres:Postgres2026$@34.42.46.202:5432/bkk_db" #os.environ["DATABASE_URL"]
-GTFS_URL = "https://go.bkk.hu/api/static/v1/public-gtfs/budapest_gtfs.zip" #os.environ["BKK_GTFS_STATIC_URL"]
+DB = os.environ["DATABASE_URL"]
+GTFS_URL = os.environ["BKK_GTFS_STATIC_URL"]
 
 def fetch_zip() -> bytes:
+    """Reading the ZIP file from the specified URL"""
     r = requests.get(GTFS_URL, timeout=20, verify=False)
     r.raise_for_status()
     return r.content
 
 def read_stops_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the stops.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("stops.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -30,6 +32,7 @@ def read_stops_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_agency_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the agency.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("agency.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -44,6 +47,7 @@ def read_agency_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_routes_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the routes.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("routes.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -61,6 +65,7 @@ def read_routes_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_shapes_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the shapes.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("shapes.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -74,6 +79,7 @@ def read_shapes_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_calendar_dates_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the calendar_dates.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("calendar_dates.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -85,6 +91,7 @@ def read_calendar_dates_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_trips_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the trips.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("trips.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -102,6 +109,7 @@ def read_trips_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_pathways_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the pathways.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("pathways.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -116,6 +124,7 @@ def read_pathways_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def read_stop_times_from_zip(gtfs_zip_bytes: bytes):
+    """Uses the ZIP and reading the stop_times.txt from it then specifies the columns"""
     z = zipfile.ZipFile(io.BytesIO(gtfs_zip_bytes))
     with z.open("stop_times.txt") as f:
         reader = csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig"))
@@ -133,6 +142,7 @@ def read_stop_times_from_zip(gtfs_zip_bytes: bytes):
             )
 
 def upsert(stops_rows, agency_rows, routes_rows, shapes_rows, calendar_dates_rows, trips_rows, pathways_rows, stop_times_rows):
+    """Specifies the SQL Query for every table one by one then making the connection"""
     sql_stops = """
     insert into bkk.stops (stop_id, stop_name, stop_lat, stop_lon, stop_code, location_type, location_sub_type, parent_station, wheelchair_boarding)
     values (%s,%s,%s,%s,%s,%s,%s,%s,%s)
@@ -230,6 +240,7 @@ def upsert(stops_rows, agency_rows, routes_rows, shapes_rows, calendar_dates_row
 
     with psycopg.connect(DB) as conn:
         with conn.cursor() as cur:
+            """Execute the queries using the specified string and info from zip"""
             cur.executemany(sql_stops, list(stops_rows))
             cur.executemany(sql_agency, list(agency_rows))
             cur.executemany(sql_routes, list(routes_rows))
@@ -243,22 +254,22 @@ def upsert(stops_rows, agency_rows, routes_rows, shapes_rows, calendar_dates_row
 
 if __name__ == "__main__":
     data = fetch_zip()
-    print("ZIP betöltve")
+    print("ZIP loaded")
     stops = read_stops_from_zip(data)
-    print("STOPS: betöltve")
+    print("STOPS: loaded")
     agency = read_agency_from_zip(data)
-    print("AGENCY: betöltve")
+    print("AGENCY: loaded")
     routes = read_routes_from_zip(data)
-    print("ROUTES: betöltve")
+    print("ROUTES: loaded")
     shapes = read_shapes_from_zip(data)
-    print("SHAPES: betöltve")
+    print("SHAPES: loaded")
     calendar_dates = read_calendar_dates_from_zip(data)
-    print("CALENDAR_DATES: betöltve")
+    print("CALENDAR_DATES: loaded")
     trips = read_trips_from_zip(data)
-    print("TRIPS: betöltve")
+    print("TRIPS: loaded")
     pathways = read_pathways_from_zip(data)
-    print("PATHWAYS: betöltve")
+    print("PATHWAYS: loaded")
     stop_times = read_stop_times_from_zip(data)
-    print("STOP_TIMES: betöltve")
+    print("STOP_TIMES: loaded")
     upsert(stops,agency, routes, shapes, calendar_dates, trips, pathways, stop_times)
     print("SQL Insert OK")

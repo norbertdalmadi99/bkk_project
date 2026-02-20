@@ -88,10 +88,8 @@ Why Bash entrypoints?
 
 ---
 
-## 🚀 How to Run Locally
+## 🛠 Challenges & Solutions
 
-```bash
-python -m venv .venv
-pip install -r requirements.txt
-cp .env.example .env
-python load_realtime_vehicle_positions.py
+- Cron used /bin/sh instead of bash → fixed by explicit /bin/bash
+- Concurrent cron runs → solved with flock locking
+- Cloud SQL connectivity → static external IP + allowlist

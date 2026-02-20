@@ -4,3 +4,6 @@ __pycache__/
 .env
 cron.log
 *.log
+.idea/
+budapest_gtfs*/
+

@@ -1,0 +1,4 @@
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DBNAME
+BKK_GTFS_STATIC_URL=https://go.bkk.hu/api/static/v1/public-gtfs/budapest_gtfs.zip
+BKK_GTFSRT_VEHICLE_POS_URL=https://go.bkk.hu/api/query/v1/ws/gtfs-rt/full/VehiclePositions.pb?key=API_KEY
+BKK_API_KEY=

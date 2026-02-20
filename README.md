@@ -15,7 +15,7 @@ Key components:
 - GitHub auto-deployment via git auto pull
 - Lock-safe cron execution
 
-![Architecture](docs/architecture.png)
+![Architecture](docs/System Architecture diagram.png)
 
 ## 🗄 Database ER Diagram
 ![ER Diagram](docs/data_model.png)

@@ -98,3 +98,13 @@ Why Bash entrypoints?
 - Cron used /bin/sh instead of bash → fixed by explicit /bin/bash
 - Concurrent cron runs → solved with flock locking
 - Cloud SQL connectivity → static external IP + allowlist
+
+---
+
+## Future features
+
+  -Data cleaning layer add before SQL injection
+  -Power BI visualizations
+
+
+

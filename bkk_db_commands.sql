@@ -39,17 +39,19 @@ create table if not exists bkk.routes(
 );
 
 create table if not exists bkk.shapes(
-	shape_id text primary key,
+	shape_id text,
 	shape_pt_sequence text,
 	shape_pt_lat double precision,
 	shape_pt_lon double precision,
-	shape_dist_traveled text
+	shape_dist_traveled text,
+	primary key (shape_id, shape_pt_sequence)
 );
 
 create table if not exists bkk.calendar_dates(
-	service_id text primary key,
+	service_id text,
 	dates text,
-	exception_type text
+	exception_type text,
+	primary key (service_id, date)
 );
 
 create table if not exists bkk.trips(

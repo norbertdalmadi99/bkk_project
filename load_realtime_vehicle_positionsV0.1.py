@@ -18,7 +18,7 @@ def fetch_feed_bytes() -> bytes:
         timeout=30,
         headers={"X-API-KEY": API_KEY},
         params={"key": API_KEY},
-        verify=False
+        verify=True
     )
     r.raise_for_status()
     return r.content

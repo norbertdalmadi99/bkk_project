@@ -9,7 +9,7 @@ GTFS_URL = os.environ["BKK_GTFS_STATIC_URL"]
 
 def fetch_zip() -> bytes:
     """Reading the ZIP file from the specified URL"""
-    r = requests.get(GTFS_URL, timeout=20, verify=False)
+    r = requests.get(GTFS_URL, timeout=20, verify=True)
     r.raise_for_status()
     return r.content
 

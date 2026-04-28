@@ -103,8 +103,8 @@ Why Bash entrypoints?
 
 ## Future features
 
-  -Data cleaning layer add before SQL injection
-  -Power BI visualizations
+-Data cleaning layer add before SQL injection
+-Power BI visualizations
 
 
 

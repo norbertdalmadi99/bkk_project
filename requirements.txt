@@ -1,4 +1,4 @@
-pip freeze > requirements.txt
-git add requirements.txt
-git commit -m "Add requirements.txt"
-git push
+requests
+psycopg[binary]
+gtfs-realtime-bindings
+urllib3

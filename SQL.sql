@@ -1,4 +1,5 @@
-SELECT pg_database_size('bkk_db');
+
+
 create schema if not exists bkk;
 
 create table if not exists bkk.stops (
@@ -38,20 +39,6 @@ create table if not exists bkk.routes(
         ON DELETE CASCADE
 );
 
-create table if not exists bkk.shapes(
-	shape_id text primary key,
-	shape_pt_sequence text,
-	shape_pt_lat double precision,
-	shape_pt_lon double precision,
-	shape_dist_traveled text
-);
-
-create table if not exists bkk.calendar_dates(
-	service_id text primary key,
-	dates text,
-	exception_type text
-);
-
 create table if not exists bkk.trips(
 	route_id text,
 	trip_id text primary key,
@@ -76,6 +63,12 @@ create table if not exists bkk.trips(
         ON DELETE CASCADE
 );
 
+create table if not exists bkk.calendar_dates(
+	service_id text primary key,
+	dates text,
+	exception_type text
+);
+
 create table if not exists bkk.translations(
 	table_name text,
 	field_name text,
@@ -93,6 +86,13 @@ create table if not exists bkk.pathways(
 	traversal_time text
 );
 
+create table if not exists bkk.shapes(
+	shape_id text primary key,
+	shape_pt_sequence text,
+	shape_pt_lat double precision,
+	shape_pt_lon double precision,
+	shape_dist_traveled text
+);
 
 create table if not exists bkk.stop_times(
 	trip_id text,
@@ -117,6 +117,19 @@ create table if not exists bkk.stop_times(
 CREATE UNIQUE INDEX IF NOT EXISTS stop_times_trip_seq_uq
 ON bkk.stop_times (trip_id, stop_sequence);
 
+SELECT * FROM bkk.stops;
+SELECT * FROM bkk.agency;
+SELECT * FROM bkk.routes;
+SELECT * FROM bkk.shapes;
+SELECT * FROM bkk.calendar_dates;
+SELECT * FROM bkk.trips;
+SELECT * FROM bkk.pathways;
+SELECT * FROM bkk.stop_times;
+
+
+
+
+
 create table if not exists bkk.vehicle_positions_history (
   id bigserial primary key,
   fetched_at timestamptz not null default now(),
@@ -135,3 +148,9 @@ create table if not exists bkk.vehicle_positions_history (
 create index if not exists idx_vph_fetched_at on bkk.vehicle_positions_history (fetched_at desc);
 create index if not exists idx_vph_vehicle_id on bkk.vehicle_positions_history (vehicle_id);
 create index if not exists idx_vph_route_id on bkk.vehicle_positions_history (route_id);
+
+SELECT * FROM bkk.vehicle_positions_
+
+
+
+
